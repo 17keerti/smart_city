@@ -172,3 +172,57 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env/
+
+# MacOS system files
+.DS_Store
+
+# Logs and runtime files
+*.log
+*.pid
+
+# Kafka consumer group offset data (if saved locally)
+*.kafka_offset
+
+# Docker files
+*.container
+docker-compose.override.yml
+
+# Editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python egg
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Flask, SocketIO
+instance/
+*.db
+*.sqlite3
+
+# Node.js 
+node_modules/
+npm-debug.log
+package-lock.json
+
+# Test coverage
+htmlcov/
+.tox/
+.coverage
+.pytest_cache/
+
+# Backup files
+*~
+*.bak
+*.tmp
