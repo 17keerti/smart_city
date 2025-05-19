@@ -1,7 +1,7 @@
 from confluent_kafka import Producer
 import json, time
 
-producer = Producer({'bootstrap.servers': 'localhost:9092'})
+producer = Producer({'bootstrap.servers': 'kafka:9092'})
 
 def publish_air_quality():
     data = {
@@ -9,7 +9,7 @@ def publish_air_quality():
         "pm10": 48,
         "timestamp": time.time()
     }
-    producer.produce("air_quality", json.dumps(data))
+    producer.produce("air_quality", json.dumps(data).encode('utf-8'))
     producer.flush()
 
 if __name__ == "__main__":

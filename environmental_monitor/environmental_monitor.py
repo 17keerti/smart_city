@@ -1,15 +1,15 @@
-from confluent_kafka import Consumer, KafkaError
+from confluent_kafka import Consumer
 import json
 
 consumer = Consumer({
-    'bootstrap.servers': 'localhost:9092',
-    'group.id': 'public_interface_group',
+    'bootstrap.servers': 'kafka:9092',
+    'group.id': 'env_monitor',
     'auto.offset.reset': 'earliest'
 })
 
-consumer.subscribe(['traffic', 'weather', 'air_quality'])
+consumer.subscribe(['air_quality', 'weather'])
 
-print("📡 Public Interface is running...")
+print("Environmental Monitoring System is running...")
 
 try:
     while True:
