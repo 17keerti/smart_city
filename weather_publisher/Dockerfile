@@ -6,7 +6,8 @@ COPY . /app
 WORKDIR /app
 
 # Install dependencies
-RUN pip install confluent-kafka
+RUN pip install confluent-kafka requests
+
 
 # Command to run the script
 CMD ["python", "weather_publisher.py"]
