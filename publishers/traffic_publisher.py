@@ -15,4 +15,4 @@ def publish_traffic_data():
 if __name__ == "__main__":
     while True:
         publish_traffic_data()
-        time.sleep(6)  # simulate data every 6 seconds
+        time.sleep(15) 

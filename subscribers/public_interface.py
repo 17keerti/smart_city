@@ -1,28 +1,30 @@
-from kafka import KafkaConsumer
+from confluent_kafka import Consumer, KafkaError
 import json
 
-# Topics this component is interested in
-TOPICS = ['air_quality', 'weather']
+consumer = Consumer({
+    'bootstrap.servers': 'localhost:9092',
+    'group.id': 'public_interface_group',
+    'auto.offset.reset': 'earliest'
+})
 
-# Create Kafka consumer
-consumer = KafkaConsumer(
-    *TOPICS,
-    bootstrap_servers='localhost:9092',
-    value_deserializer=lambda m: json.loads(m.decode('utf-8')),
-    auto_offset_reset='earliest',
-    enable_auto_commit=True,
-    group_id='public-interface-group'
-)
+consumer.subscribe(['traffic', 'weather', 'air_quality'])
 
 print("📡 Public Interface is running...")
 
 try:
-    for message in consumer:
-        topic = message.topic
-        data = message.value
-        print(f"[{topic.upper()}] Received: {data}")
+    while True:
+        msg = consumer.poll(1.0)
+        if msg is None:
+            continue
+        if msg.error():
+            print("Consumer error: {}".format(msg.error()))
+            continue
+
+        data = json.loads(msg.value().decode('utf-8'))
+        topic = msg.topic() # Get the topic
+        print(f"Received from {topic}: {data}") # Print topic name
 
 except KeyboardInterrupt:
-    print("\nPublic Interface stopped.")
+    pass
 finally:
     consumer.close()
