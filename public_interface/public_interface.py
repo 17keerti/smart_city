@@ -7,7 +7,7 @@ consumer = Consumer({
     'auto.offset.reset': 'earliest'
 })
 
-consumer.subscribe(['traffic', 'weather', 'air_quality'])
+consumer.subscribe(['weather', 'traffic', 'air_quality'])
 
 print("📡 Public Interface is running...")
 
@@ -22,7 +22,8 @@ try:
 
         data = json.loads(msg.value().decode('utf-8'))
         topic = msg.topic() # Get the topic
-        print(f"Received from {topic}: {data}") # Print topic name
+        print(f"Received from {topic}: {data} | partition: {msg.partition()} | offset: {msg.offset()}")
+
 
 except KeyboardInterrupt:
     pass

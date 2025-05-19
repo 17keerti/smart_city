@@ -6,7 +6,7 @@ import requests
 producer = Producer({'bootstrap.servers': 'kafka:9092'})
 
 # You can set any city here (e.g., 'London', 'New York', or even your coordinates)
-CITY = "San Jose"
+CITY = "Santa Clara"
 API_URL = f"https://wttr.in/{CITY}?format=j1"
 
 def get_weather_data():
