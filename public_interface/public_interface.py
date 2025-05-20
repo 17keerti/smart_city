@@ -1,6 +1,7 @@
 from confluent_kafka import Consumer, KafkaError
 import json
 import heapq
+import time
 
 consumer = Consumer({
     'bootstrap.servers': 'kafka:9092,kafka2:9093',
@@ -8,6 +9,7 @@ consumer = Consumer({
     'auto.offset.reset': 'earliest'
 })
 
+time.sleep(5) 
 consumer.subscribe(['weather', 'traffic', 'air_quality'])
 
 print("📡 Public Interface is running with priority queue...")
@@ -33,7 +35,7 @@ try:
         # Drain and process messages (you can also limit how many per loop)
         while priority_queue:
             prio, topic, data, part, offset = heapq.heappop(priority_queue)
-            print(f"🚨 [Priority {prio}] Received from {topic}: {data} | partition: {part} | offset: {offset}")
+            print(f"🚨 [Priority {prio}] Received from {topic}: {data}")
 
 except KeyboardInterrupt:
     pass

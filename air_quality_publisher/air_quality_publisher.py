@@ -20,10 +20,10 @@ def get_air_quality_data():
         data = response.json()
         latest_index = -1  # Get the latest reading
         air_data = {
-            "timestamp": time.time(),
             "pm10": data['hourly']['pm10'][latest_index],
             "ozone": data['hourly']['ozone'][latest_index],
-            "carbon_monoxide": data['hourly']['carbon_monoxide'][latest_index]
+            "carbon_monoxide": data['hourly']['carbon_monoxide'][latest_index],
+            "timestamp": time.time()
         }
         return air_data
     except requests.RequestException as e:
