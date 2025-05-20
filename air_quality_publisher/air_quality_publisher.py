@@ -4,7 +4,7 @@ import time
 import requests
 
 # Kafka setup
-producer = Producer({'bootstrap.servers': 'kafka:9092'})
+producer = Producer({'bootstrap.servers': 'kafka:9092,kafka2:9093'})
 
 # Location (Santa Clara, CA)
 LAT, LON = 37.3541, -121.9552

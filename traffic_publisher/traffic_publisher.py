@@ -1,7 +1,7 @@
 from confluent_kafka import Producer
 import json, time, random
 
-producer = Producer({'bootstrap.servers': 'kafka:9092'})
+producer = Producer({'bootstrap.servers': 'kafka:9092,kafka2:9093'})
 
 def publish_traffic_data():
     congestion = random.choice(["low", "medium", "high"])

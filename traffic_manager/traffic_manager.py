@@ -3,7 +3,7 @@ import json
 import heapq
 
 consumer = Consumer({
-    'bootstrap.servers': 'kafka:9092',
+    'bootstrap.servers': 'kafka:9092,kafka2:9093',
     'group.id': 'traffic_manager',
     'auto.offset.reset': 'earliest'
 })
