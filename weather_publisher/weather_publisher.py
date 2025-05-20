@@ -30,6 +30,9 @@ def get_weather_data():
 def publish_weather():
     weather = get_weather_data()
     if weather:
+        desc = weather["description"].lower()
+        severe = any(x in desc for x in ["storm", "thunder", "hail"])
+        weather["priority"] = 0 if severe else 2
         producer.produce("weather", json.dumps(weather).encode('utf-8'))
         producer.flush()
     else:

@@ -1,5 +1,6 @@
 from confluent_kafka import Consumer
 import json
+import heapq
 
 consumer = Consumer({
     'bootstrap.servers': 'kafka:9092',
@@ -10,6 +11,8 @@ consumer = Consumer({
 consumer.subscribe(['air_quality', 'weather'])
 
 print("Environmental Monitoring System is running...")
+
+priority_queue = []
 
 try:
     while True:
@@ -22,7 +25,12 @@ try:
 
         data = json.loads(msg.value().decode('utf-8'))
         topic = msg.topic() # Get the topic
-        print(f"Received from {topic}: {data}") # Print topic name
+        priority = data.get("priority", 2)  # Default to low priority if missing
+        heapq.heappush(priority_queue, (priority, topic, data))
+
+        while priority_queue:
+            prio, topic, data = heapq.heappop(priority_queue)
+            print(f"🌿 [Priority {prio}] Received from {topic}: {data}")
 
 except KeyboardInterrupt:
     pass
