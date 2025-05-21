@@ -15,8 +15,9 @@ def publish_traffic_data():
     data = {
         "intersection": f"I-{random.randint(1, 5)}",
         "congestion_level": congestion,   # Use the same congestion for priority and data
+        "timestamp": time.time(),        
         "priority": priority,             # Add priority field here!
-        "timestamp": time.time()
+
     }
     producer.produce("traffic", json.dumps(data).encode('utf-8'))
     producer.flush()

@@ -1,6 +1,7 @@
 from confluent_kafka import Consumer
 import json
 import heapq
+import time
 
 consumer = Consumer({
     'bootstrap.servers': 'kafka:9092,kafka2:9093',
@@ -8,6 +9,7 @@ consumer = Consumer({
     'auto.offset.reset': 'earliest'
 })
 
+time.sleep(5)
 consumer.subscribe(['air_quality', 'weather'])
 
 print("Environmental Monitoring System is running...")
