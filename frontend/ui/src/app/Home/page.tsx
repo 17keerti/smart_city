@@ -52,10 +52,10 @@ export default function HomeDashboard() {
       console.log("Available topics:", topics);
       setAvailableTopics(topics);
       // Automatically subscribe to all topics on connect for initial setup
-      topics.forEach(topic => {
-        socket.emit('subscribe_topic', topic);
-        setSubscribedTopics(prev => new Set(prev).add(topic));
-      });
+      // topics.forEach(topic => {
+      //   socket.emit('subscribe_topic', topic);
+      //   setSubscribedTopics(prev => new Set(prev).add(topic));
+      // });
     });
 
     // Handle subscription status updates (success/failure)
