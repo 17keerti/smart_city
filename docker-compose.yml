@@ -123,6 +123,21 @@ services:
     networks:
       - app-network
 
+  # NEW: Flask Backend Service
+  backend:
+    build: ./backend # Build from the new backend directory
+    command: python -u app.py # Run the Flask app
+    ports:
+      - "5001:5001" # Expose port 5000 for the frontend to access
+    depends_on:
+      kafka:
+        condition: service_healthy # Ensure Kafka is healthy before starting
+    environment:
+      - PYTHONUNBUFFERED=1 # Ensure Python output is unbuffered
+    restart: on-failure
+    networks:
+      - app-network
+
 networks:
   app-network:
     driver: bridge
