@@ -9,12 +9,15 @@ consumer = Consumer({
     'auto.offset.reset': 'earliest'
 })
 
-time.sleep(5) 
+time.sleep(5)
 consumer.subscribe(['weather', 'traffic', 'air_quality'])
 
 print("📡 Public Interface is running with priority queue...")
 
 priority_queue = []
+
+# ADD THESE LINES: Allowed publishers
+ALLOWED_PUBLISHERS = ["weather_sensor_2", "traffic_sensor_3", "air_quality_sensor_1"]
 
 try:
     while True:
@@ -27,6 +30,13 @@ try:
 
         data = json.loads(msg.value().decode('utf-8'))
         topic = msg.topic()
+        publisher_id = data.get("publisher_id")
+
+        # ADD THESE LINES: Authentication
+        if publisher_id not in ALLOWED_PUBLISHERS:
+            print(f"⚠️  Unauthorized message from publisher: {publisher_id}. Discarding.")
+            continue
+
         priority = data.get("priority", 2)  # Default priority = 2 (low)
 
         # Push into priority queue
