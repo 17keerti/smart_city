@@ -3,7 +3,7 @@ import json
 import threading
 import time
 from flask import Flask, jsonify, request # Import request here
-from flask_cors import CORS
+from flask_cors import CORS # type: ignore
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from confluent_kafka import Consumer, KafkaError
 

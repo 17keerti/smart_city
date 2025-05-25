@@ -157,6 +157,12 @@ export default function HomeDashboard() {
     </div>
   );
 
+  console.log("trafficLog:", trafficLog);
+  console.log("weatherLog:", weatherLog);
+  console.log("airQualityLog:", airQualityLog);
+  console.log("availableTopics:", availableTopics);
+  console.log("subscribedTopics:", Array.from(subscribedTopics));
+
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center px-8 py-12 overflow-hidden">
       {images.map((src, index) => (

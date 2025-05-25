@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Login from "./login/page";
+import Dashboard from "./Dashboard/page";
 
 export default function Home() {
-  return <Login />;
+  return <Dashboard />;
 }
