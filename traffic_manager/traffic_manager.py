@@ -14,6 +14,9 @@ print("🚦 Traffic Management System is running...")
 
 priority_queue = []
 
+# Allowed publishers
+ALLOWED_PUBLISHERS = ["traffic_sensor_3"]
+
 try:
     while True:
         msg = consumer.poll(1.0)
@@ -25,6 +28,13 @@ try:
 
         data = json.loads(msg.value().decode('utf-8'))
         topic = msg.topic() # Get the topic
+        publisher_id = data.get("publisher_id")
+
+        # Authentication
+        if publisher_id not in ALLOWED_PUBLISHERS:
+            print(f"⚠️  Unauthorized message from publisher: {publisher_id}. Discarding.")
+            continue
+
         priority = data.get("priority", 2)  # Default to low priority if missing
         heapq.heappush(priority_queue, (priority, topic, data))
 

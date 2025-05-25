@@ -9,12 +9,15 @@ consumer = Consumer({
     'auto.offset.reset': 'earliest'
 })
 
-time.sleep(5) 
+time.sleep(5)
 consumer.subscribe(['weather', 'traffic', 'air_quality'])
 
 print("📡 Public Interface is running with priority queue...")
 
 priority_queue = []
+
+# Allowed publishers
+ALLOWED_PUBLISHERS = ["weather_sensor_2", "traffic_sensor_3", "air_quality_sensor_1"]
 
 try:
     while True:
@@ -27,12 +30,19 @@ try:
 
         data = json.loads(msg.value().decode('utf-8'))
         topic = msg.topic()
+        publisher_id = data.get("publisher_id")
+
+        # Authentication
+        if publisher_id not in ALLOWED_PUBLISHERS:
+            print(f"⚠️  Unauthorized message from publisher: {publisher_id}. Discarding.")
+            continue
+
         priority = data.get("priority", 2)  # Default priority = 2 (low)
 
         # Push into priority queue
         heapq.heappush(priority_queue, (priority, topic, data, msg.partition(), msg.offset()))
 
-        # Drain and process messages (you can also limit how many per loop)
+        # Drain and process messages
         while priority_queue:
             prio, topic, data, part, offset = heapq.heappop(priority_queue)
             print(f"🚨 [Priority {prio}] Received from {topic}: {data}")
