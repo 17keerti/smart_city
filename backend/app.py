@@ -25,6 +25,9 @@ active_client_subscriptions = {}
 # List of all available Kafka topics that clients can subscribe to
 AVAILABLE_TOPICS = ['air_quality', 'weather', 'traffic']
 
+# Allowed publishers
+ALLOWED_PUBLISHERS = ["weather_sensor_2", "traffic_sensor_3", "air_quality_sensor_1"]
+
 # --- Kafka Consumer Thread ---
 # This thread will continuously consume messages from all AVAILABLE_TOPICS
 # and then dispatch them to the relevant Socket.IO clients.
@@ -42,7 +45,7 @@ def kafka_consumer_thread():
     }
 
     consumer = Consumer(consumer_conf)
-    consumer.subscribe(AVAILABLE_TOPICS) # Subscribe to all topics we want to expose
+    consumer.subscribe(AVAILABLE_TOPICS)
 
     print("Flask Backend: Starting Kafka consumer for all dashboard topics...")
 
@@ -68,11 +71,17 @@ def kafka_consumer_thread():
                 data = json.loads(msg.value().decode('utf-8'))
                 topic = msg.topic()
 
+                # Authentication check
+                publisher_id = data.get("publisher_id")
+                if publisher_id not in ALLOWED_PUBLISHERS:
+                    print(f"⚠️  Unauthorized message from publisher: {publisher_id}. Discarding in backend.")
+                    continue
+
                 # Dispatch the message to all clients subscribed to this topic
                 if topic in AVAILABLE_TOPICS:
                     payload = {'topic': topic, 'data': data}
                     socketio.emit('new_data', payload, room=topic)
-                    # print(f"Flask Backend: Dispatched new data for topic '{topic}' to subscribed clients.") # Uncomment for more verbose logging
+                    # print(f"Flask Backend: Dispatched new data for topic '{topic}' to subscribed clients.")
 
             except json.JSONDecodeError as e:
                 print(f"Flask Backend: Error decoding JSON from Kafka message: {e}")
@@ -158,3 +167,4 @@ if __name__ == '__main__':
     # Run the Flask app with Socket.IO
     # Use `debug=True` for development, but set to `False` in production
     socketio.run(app, host='0.0.0.0', port=5001, debug=True, allow_unsafe_werkzeug=True)
+
