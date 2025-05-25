@@ -16,8 +16,8 @@ print("Environmental Monitoring System is running...")
 
 priority_queue = []
 
-# ADD THESE LINES: List of allowed publishers
-ALLOWED_PUBLISHERS = ["air_quality_sensor_1", "weather_sensor_2"]  # Add the IDs you assign
+# List of allowed publishers
+ALLOWED_PUBLISHERS = ["air_quality_sensor_1", "weather_sensor_2"]  
 
 try:
     while True:
@@ -30,12 +30,12 @@ try:
 
         data = json.loads(msg.value().decode('utf-8'))
         topic = msg.topic() # Get the topic
-        publisher_id = data.get("publisher_id")  # Get the publisher ID
+        publisher_id = data.get("publisher_id")  
 
-        # ADD THESE LINES: Authentication check
+        # Authentication check
         if publisher_id not in ALLOWED_PUBLISHERS:
             print(f"⚠️  Unauthorized message from publisher: {publisher_id}. Discarding.")
-            continue  # Skip processing this message
+            continue  
 
         priority = data.get("priority", 2)  # Default to low priority if missing
         heapq.heappush(priority_queue, (priority, topic, data))

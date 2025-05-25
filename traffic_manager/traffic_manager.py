@@ -14,7 +14,7 @@ print("🚦 Traffic Management System is running...")
 
 priority_queue = []
 
-# ADD THESE LINES: Allowed publishers
+# Allowed publishers
 ALLOWED_PUBLISHERS = ["traffic_sensor_3"]
 
 try:
@@ -30,7 +30,7 @@ try:
         topic = msg.topic() # Get the topic
         publisher_id = data.get("publisher_id")
 
-        # ADD THESE LINES: Authentication
+        # Authentication
         if publisher_id not in ALLOWED_PUBLISHERS:
             print(f"⚠️  Unauthorized message from publisher: {publisher_id}. Discarding.")
             continue

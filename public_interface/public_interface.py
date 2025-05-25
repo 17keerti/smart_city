@@ -16,7 +16,7 @@ print("📡 Public Interface is running with priority queue...")
 
 priority_queue = []
 
-# ADD THESE LINES: Allowed publishers
+# Allowed publishers
 ALLOWED_PUBLISHERS = ["weather_sensor_2", "traffic_sensor_3", "air_quality_sensor_1"]
 
 try:
@@ -32,7 +32,7 @@ try:
         topic = msg.topic()
         publisher_id = data.get("publisher_id")
 
-        # ADD THESE LINES: Authentication
+        # Authentication
         if publisher_id not in ALLOWED_PUBLISHERS:
             print(f"⚠️  Unauthorized message from publisher: {publisher_id}. Discarding.")
             continue
@@ -42,7 +42,7 @@ try:
         # Push into priority queue
         heapq.heappush(priority_queue, (priority, topic, data, msg.partition(), msg.offset()))
 
-        # Drain and process messages (you can also limit how many per loop)
+        # Drain and process messages
         while priority_queue:
             prio, topic, data, part, offset = heapq.heappop(priority_queue)
             print(f"🚨 [Priority {prio}] Received from {topic}: {data}")

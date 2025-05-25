@@ -5,11 +5,10 @@ import requests
 
 producer = Producer({'bootstrap.servers': 'kafka:9092,kafka2:9093'})
 
-# You can set any city here
 CITY = "Santa Clara"
 API_URL = f"https://wttr.in/{CITY}?format=j1"
 
-# ADD THIS LINE: Assign a unique ID to this publisher
+# Assign a unique ID to this publisher
 PUBLISHER_ID = "weather_sensor_2"
 
 def get_weather_data():
@@ -24,7 +23,7 @@ def get_weather_data():
             "humidity": data['current_condition'][0]['humidity'],   # Percentage
             "description": data['current_condition'][0]['weatherDesc'][0]['value'],
             "timestamp": time.time(),
-            "publisher_id": PUBLISHER_ID  # ADD THIS LINE: Include publisher ID
+            "publisher_id": PUBLISHER_ID
         }
         return weather_data
     except requests.RequestException as e:

@@ -13,8 +13,8 @@ AIR_QUALITY_URL = (
     f"latitude={LAT}&longitude={LON}&hourly=pm10,carbon_monoxide,ozone"
 )
 
-# ADD THIS LINE: Assign a unique ID to this publisher
-PUBLISHER_ID = "air_quality_sensor_1"  # You can use a string or integer
+# Assign a unique ID to this publisher
+PUBLISHER_ID = "air_quality_sensor_1" 
 
 def get_air_quality_data():
     try:
@@ -27,7 +27,7 @@ def get_air_quality_data():
             "ozone": data['hourly']['ozone'][latest_index],
             "carbon_monoxide": data['hourly']['carbon_monoxide'][latest_index],
             "timestamp": time.time(),
-            "publisher_id": PUBLISHER_ID  # ADD THIS LINE: Include publisher ID
+            "publisher_id": PUBLISHER_ID 
         }
         return air_data
     except requests.RequestException as e:
