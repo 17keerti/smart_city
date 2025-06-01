@@ -36,7 +36,7 @@ def initialize_kafka_consumer():
     global kafka_consumer
     if kafka_consumer is None:
         consumer_conf = {
-            'bootstrap.servers': 'kafka:9092,kafka2:9093',
+            'bootstrap.servers': 'kafka:9092',
             'group.id': 'dashboard_websocket_consumer_group', # Unique consumer group ID
             'auto.offset.reset': 'earliest' # Start consuming from the beginning of the topic
         }

@@ -1,7 +1,7 @@
 from confluent_kafka import Producer
 import json, time, random
 
-producer = Producer({'bootstrap.servers': 'kafka:9092,kafka2:9093'})
+producer = Producer({'bootstrap.servers': 'kafka:9092'})
 
 # Assign a unique ID
 PUBLISHER_ID = "traffic_sensor_3"

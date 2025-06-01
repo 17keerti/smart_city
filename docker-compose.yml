@@ -17,34 +17,12 @@ services:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
-      KAFKA_DEFAULT_REPLICATION_FACTOR: 2
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_DEFAULT_REPLICATION_FACTOR: 1
     networks:
       - app-network
     healthcheck:
       test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 20s
-
-  kafka2:
-    image: confluentinc/cp-kafka:latest
-    depends_on:
-      - zookeeper
-    ports:
-      - "9093:9093"
-    environment:
-      KAFKA_BROKER_ID: 2
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9093
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka2:9093
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 2
-      KAFKA_DEFAULT_REPLICATION_FACTOR: 2
-    networks:
-      - app-network
-    healthcheck:
-      test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9093"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -86,42 +64,6 @@ services:
     networks:
       - app-network
 
-  environmental_monitor:
-    build: ./services/environmental_monitor
-    command: python -u environmental_monitor.py
-    depends_on:
-      kafka:
-        condition: service_healthy
-    environment:
-      - PYTHONUNBUFFERED=1
-    restart: on-failure
-    networks:
-      - app-network
-
-  traffic_manager:
-    build: ./services/traffic_manager
-    command: python -u traffic_manager.py
-    depends_on:
-      kafka:
-        condition: service_healthy
-    environment:
-      - PYTHONUNBUFFERED=1
-    restart: on-failure
-    networks:
-      - app-network
-
-  public_interface:
-    build: ./services/public_interface
-    command: python -u public_interface.py
-    depends_on:
-      kafka:
-        condition: service_healthy
-    environment:
-      - PYTHONUNBUFFERED=1
-    restart: on-failure
-    networks:
-      - app-network
-
   backend:
     build: ./backend 
     command: python -u app.py 
@@ -135,16 +77,6 @@ services:
     restart: on-failure
     networks:
       - app-network
-
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #   container_name: frontend
-  #   ports:
-  #     - "8080:80"
-  #   depends_on:
-  #     - backend
-  #   restart: on-failure
 
 networks:
   app-network:

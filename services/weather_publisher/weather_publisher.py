@@ -3,7 +3,7 @@ import json
 import time
 import requests
 
-producer = Producer({'bootstrap.servers': 'kafka:9092,kafka2:9093'})
+producer = Producer({'bootstrap.servers': 'kafka:9092'})
 
 CITY = "London"
 API_URL = f"https://wttr.in/{CITY}?format=j1"

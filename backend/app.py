@@ -27,7 +27,7 @@ ALLOWED_PUBLISHERS = ["weather_sensor_2", "traffic_sensor_3", "air_quality_senso
 
 def kafka_consumer_thread():
     consumer_conf = {
-        'bootstrap.servers': 'kafka:9092,kafka2:9093',
+        'bootstrap.servers': 'kafka:9092',
         'group.id': 'dashboard_websocket_consumer_group',
         'auto.offset.reset': 'earliest'
     }
