@@ -9,15 +9,13 @@ from confluent_kafka import Consumer, KafkaError
 
 app = Flask(__name__)
 # Enable CORS for all origins, crucial for frontend development
-# CORS(app, resources={r"/*": {"origins": "*"}})
-# CORS(app, resources={r"/*": {"origins": ["http://localhost:8080"]}})
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Initialize SocketIO. `cors_allowed_origins="*"` is important for development.
 # `message_queue` can be used for scaling with multiple SocketIO instances (e.g., Redis)
 # For a single instance, it's not strictly necessary but good practice.
-# socketio = SocketIO(app, cors_allowed_origins="*")
-# socketio = SocketIO(app, cors_allowed_origins="http://localhost:8080")
-socketio = SocketIO(app, cors_allowed_origins=["http://frontend:8080", "http://backend:80"], transports=['websocket', 'polling'])
+socketio = SocketIO(app, cors_allowed_origins="*")
+
 # --- Global State for Managing Subscriptions ---
 # This dictionary will map Socket.IO session IDs (sids) to a set of topics
 # that each client is currently subscribed to.
@@ -106,8 +104,6 @@ def handle_connect():
     """
     # Access request.sid from the imported `request` object
     client_sid = request.sid
-    print(f"CONNECT: Client connected: {client_sid}") # Add this
-
     active_client_subscriptions[client_sid] = set()
     print(f"Client connected: {client_sid}. Total clients: {len(active_client_subscriptions)}")
     # Emit the list of available topics to the newly connected client
@@ -133,8 +129,6 @@ def handle_subscribe_topic(topic_name):
     Adds the topic to the client's subscription set and makes them join the Socket.IO room.
     """
     client_sid = request.sid # Access request.sid
-    print(f"SUBSCRIBE: Client {client_sid} subscribing to {topic_name}") # Add this
-
     if topic_name in AVAILABLE_TOPICS:
         active_client_subscriptions[client_sid].add(topic_name)
         join_room(topic_name)
@@ -172,7 +166,5 @@ if __name__ == '__main__':
 
     # Run the Flask app with Socket.IO
     # Use `debug=True` for development, but set to `False` in production
-    print(f"SocketIO server starting on port 5001, all interfaces")  # Explicit log
-
     socketio.run(app, host='0.0.0.0', port=5001, debug=True, allow_unsafe_werkzeug=True)
 
