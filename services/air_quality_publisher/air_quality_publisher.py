@@ -51,4 +51,4 @@ def publish_air_quality():
 if __name__ == "__main__":
     while True:
         publish_air_quality()
-        time.sleep(10)
+        time.sleep(20)

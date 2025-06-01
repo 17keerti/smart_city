@@ -44,4 +44,4 @@ def publish_weather():
 if __name__ == "__main__":
     while True:
         publish_weather()
-        time.sleep(10)
+        time.sleep(20)
