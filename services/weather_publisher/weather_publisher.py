@@ -5,7 +5,7 @@ import requests
 
 producer = Producer({'bootstrap.servers': 'kafka:9092,kafka2:9093'})
 
-CITY = "Santa Clara"
+CITY = "London"
 API_URL = f"https://wttr.in/{CITY}?format=j1"
 
 # Assign a unique ID to this publisher
@@ -13,7 +13,7 @@ PUBLISHER_ID = "weather_sensor_2"
 
 def get_weather_data():
     try:
-        response = requests.get(API_URL)
+        response = requests.get(API_URL, timeout=5)
         response.raise_for_status()
         data = response.json()
 

@@ -130,8 +130,10 @@ export default function HomeDashboard() {
     if (!socketRef.current) return;
 
     if (subscribedTopics.has(topic)) {
+      console.log(`Unsubscribing from ${topic}`);
       socketRef.current.emit("unsubscribe_topic", topic);
     } else {
+      
       socketRef.current.emit("subscribe_topic", topic);
     }
   };
