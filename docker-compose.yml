@@ -136,15 +136,15 @@ services:
     networks:
       - app-network
 
-  frontend:
-    build:
-      context: ./frontend
-    container_name: frontend
-    ports:
-      - "8080:80"
-    depends_on:
-      - backend
-    restart: on-failure
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #   container_name: frontend
+  #   ports:
+  #     - "8080:80"
+  #   depends_on:
+  #     - backend
+  #   restart: on-failure
 
 networks:
   app-network:
